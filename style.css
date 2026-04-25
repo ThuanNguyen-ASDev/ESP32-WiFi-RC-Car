@@ -1,0 +1,126 @@
+/* --- 1. CẤU HÌNH CƠ BẢN --- */
+* { box-sizing: border-box; user-select: none; -webkit-touch-callout: none; font-family: 'Segoe UI', Arial, sans-serif; }
+body { margin: 0; background-color: #050505; color: #fff; width: 100vw; height: 100dvh; height: 100vh; overflow: hidden; position: fixed; overscroll-behavior: none; }
+
+/* Icon & Animation */
+.icon-img { width: 60%; height: 60%; object-fit: contain; pointer-events: none; filter: grayscale(100%) opacity(0.5); transition: all 0.2s ease; }
+.btn.active .icon-img { filter: grayscale(0%) opacity(1) drop-shadow(0 0 8px #00d2ff); transform: scale(1.1); }
+.btn:active .icon-img { transform: scale(0.9); }
+
+/* Ẩn nút đèn hậu */
+#btnTailLight { display: none !important; }
+
+.icon-logo { width: 70%; height: 70%; object-fit: contain; opacity: 0.5; }
+.icon-xl { width: 15vmin; height: 15vmin; margin-bottom: 2vmin; filter: drop-shadow(0 0 10px #00d2ff); animation: rotatePhone 2s infinite; }
+@keyframes rotatePhone { 0% { transform: rotate(0deg); } 25% { transform: rotate(90deg); } 100% { transform: rotate(90deg); } }
+
+/* Cảnh báo xoay màn hình */
+.rotate-warning { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; color: #00d2ff; font-weight: bold; font-size: 4vmin; letter-spacing: 2px; }
+@media screen and (orientation: portrait) { .rotate-warning { display: flex; } .cockpit { display: none; } }
+
+/* --- 2. BỐ CỤC CHÍNH (3 CỘT) --- */
+.cockpit { 
+    display: flex; width: 100%; height: 100%; 
+    background: radial-gradient(circle at center bottom, #1a1a1a 0%, #000 90%); 
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.hud-header { position: absolute; top: 0; width: 100%; height: 8vmin; display: flex; justify-content: space-between; align-items: center; padding: 0 2vmin; background: rgba(0,0,0,0.6); border-bottom: 1px solid #333; z-index: 10; font-size: 2.5vmin; }
+.hud-left, .hud-right { color: #888; display: flex; align-items: center; gap: 1vmin; width: 25%; } .hud-right { justify-content: flex-end; } 
+.hud-center { color: #00d2ff; font-weight: 900; letter-spacing: 0.2vmin; font-size: 3vmin; cursor: pointer; }
+.status-led { width: 1.5vmin; height: 1.5vmin; background: #444; border-radius: 50%; box-shadow: 0 0 5px #444; } .status-led.on { background: #00d2ff; box-shadow: 0 0 10px #00d2ff; }
+
+/* ZONE LEFT: VÔ LĂNG */
+.zone-left { flex: 1.2; display: flex; align-items: center; justify-content: center; position: relative; } 
+.wheel-wrapper { width: 35vmin; height: 35vmin; position: relative; display: flex; justify-content: center; } 
+.wheel-outer { width: 100%; height: 100%; border-radius: 50%; border: 1.5vmin solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 15px #000; background: radial-gradient(#2a2a2a 30%, #111 70%); transition: transform 0.1s linear; display: flex; justify-content: center; align-items: center; } 
+.wheel-indicator { position: absolute; top: -1.5vmin; left: 50%; transform: translateX(-50%); width: 2vmin; height: 4vmin; background: #ff4757; border-radius: 0 0 3px 3px; z-index: 2; }
+.wheel-center { width: 12vmin; height: 12vmin; background: #1a1a1a; border: 1px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 10px rgba(0,0,0,0.5); }
+.hud-value { position: absolute; bottom: -5vmin; width: 100%; text-align: center; font-family: monospace; color: #00d2ff; font-size: 4vmin; text-shadow: 0 0 5px rgba(0, 210, 255, 0.4); }
+
+/* ZONE CENTER: DASHBOARD & BUTTONS */
+.zone-center { 
+    flex: 1.5; 
+    display: flex; flex-direction: column; 
+    align-items: center; justify-content: center; 
+    padding: 2vmin; gap: 2vmin;
+    padding-top: 6vmin; 
+}
+
+/* Màn hình Dashboard */
+.dashboard-screen {
+    width: 100%; height: 25vmin;
+    background: #000; border: 1px solid #333; border-radius: 1vmin;
+    position: relative; overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    display: flex; justify-content: center; align-items: center;
+}
+.screen-idle { text-align: center; }
+.digital-speed { font-size: 10vmin; font-weight: 900; color: #fff; line-height: 1; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+.speed-unit { font-size: 2vmin; color: #666; letter-spacing: 2px; }
+
+/* Radar View */
+.radar-view { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+.car-silhouette { width: 6vmin; height: 10vmin; background: #333; border-radius: 1vmin; margin-bottom: 1vmin; z-index: 2; }
+.radar-waves { position: absolute; bottom: 50%; left: 50%; transform: translateX(-50%); }
+.wave { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border: 0.5vmin solid #333; border-top-left-radius: 10vmin; border-top-right-radius: 10vmin; border-bottom: 0; }
+.w1 { width: 10vmin; height: 5vmin; } .w2 { width: 16vmin; height: 8vmin; } .w3 { width: 22vmin; height: 11vmin; }
+.radar-view.warning .wave { border-color: #ff4757; box-shadow: 0 0 10px #ff4757; animation: flashWave 0.2s infinite alternate; }
+.radar-view.warning .warning-text { display: block; }
+.warning-text { display: none; position: absolute; top: 1vmin; color: #ff4757; font-weight: bold; font-size: 2vmin; animation: blink 0.5s infinite; background: rgba(0,0,0,0.8); padding: 0.5vmin 1vmin; border-radius: 0.5vmin;}
+@keyframes flashWave { from { opacity: 0.5; } to { opacity: 1; } } @keyframes blink { 50% { opacity: 0; } }
+
+/* --- CỤM NÚT BẤM (GRID) --- */
+.control-deck { 
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2vmin; 
+    width: 80%; 
+}
+.btn { 
+    background: #222; border: 1px solid #444; border-radius: 1vmin; height: 8vmin;
+    display: flex; justify-content: center; align-items: center; position: relative; 
+    box-shadow: 0 0.5vmin 0 #000; cursor: pointer;
+}
+.btn:active { transform: translateY(0.5vmin); box-shadow: none; }
+.btn.active { background: #162b33; border-color: #00d2ff; }
+
+/* --- CẬP NHẬT: NÚT CRUISE TO RA (FULL WIDTH) --- */
+.btn#btnCruise { 
+    grid-column: span 2; /* Chiếm 2 cột (tràn viền) */
+    background: #1a1a1a;
+    border-color: #333;
+}
+.btn#btnCruise.active { border-color: #2ecc71; color: #2ecc71; }
+/* Phóng to chữ Cruise */
+.btn#btnCruise span { 
+    color: #2ecc71 !important; 
+    text-shadow: 0 0 5px rgba(46, 204, 113, 0.2); 
+    font-size: 3vmin !important; /* To chữ lên */
+    letter-spacing: 2px;
+}
+
+
+/* ZONE RIGHT: GA & PHANH */
+.zone-right { flex: 1.2; display: flex; align-items: center; justify-content: center; padding: 2vmin; }
+.drive-column { 
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
+    height: 80%; width: 20vmin;
+}
+
+/* Nút Số lùi */
+.btn-gear { width: 100%; height: 6vmin; background: #222; border: 1px solid #444; border-radius: 1vmin; box-shadow: 0 0.5vmin 0 #000; }
+.btn-gear.active { background: #641e16; border-color: #ff4757; }
+
+/* Thanh ga */
+.throttle-wrapper { width: 100%; flex: 1; margin: 2vmin 0; position: relative; display: flex; flex-direction: column; align-items: center; }
+.slider-container { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; }
+.slider-container.locked { opacity: 0.3; filter: grayscale(100%); pointer-events: none; }
+
+.vertical-slider { position: absolute; top: 50%; left: 50%; width: 50vh; height: 20vmin; transform: translate(-50%, -50%) rotate(-90deg); opacity: 0; z-index: 10; cursor: pointer; margin: 0; }
+.slider-groove { position: absolute; width: 2.5vmin; height: 100%; background: #151515; border: 1px solid #333; border-radius: 1vmin; box-shadow: inset 0 0 5px #000; }
+.slider-indicator { position: absolute; left: 50%; transform: translateX(-50%); width: 16vmin; height: 7vmin; background: linear-gradient(#333, #222); border: 1px solid #555; border-radius: 1vmin; box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; pointer-events: none; bottom: 0%; transition: bottom 0.05s ease-out; }
+.indicator-light { width: 70%; height: 1vmin; background: #00d2ff; box-shadow: 0 0 10px #00d2ff; border-radius: 1vmin; transition: all 0.2s; }
+.slider-indicator.reverse .indicator-light { background: #ff4757; box-shadow: 0 0 10px #ff4757; }
+
+/* Nút Phanh */
+.btn-brake { width: 100%; height: 12vmin; background: linear-gradient(145deg, #a93226, #922b21); border: 1px solid #c0392b; color: white; font-weight: bold; font-size: 3vmin; border-radius: 1vmin; box-shadow: 0 0.5vmin 0 #641e16; letter-spacing: 2px; cursor: pointer; }
+.btn-brake:active, .btn-brake.active { background: #e74c3c; box-shadow: inset 0 0 20px #000; transform: translateY(0.5vmin); }

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RC Pro Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="cockpit">
+        
+        <div class="hud-header">
+            <div class="hud-left">
+                <span class="status-led" id="statusLed"></span>
+                <span id="connectionStatus">CONNECTED</span>
+            </div>
+            <div class="hud-center">RC CONTROL SYSTEM</div>
+            <div class="hud-right">
+                <span>BAT: 100%</span>
+            </div>
+        </div>
+
+        <div class="zone-left">
+            <div class="wheel-wrapper" id="steeringZone">
+                <div class="wheel-outer" id="wheel">
+                    <div class="wheel-spoke"></div>
+                    <div class="wheel-indicator"></div>
+                    <div class="wheel-center">
+                        <img src="assets/wheel.png" class="icon-logo" alt="Logo">
+                    </div>
+                </div>
+                <div class="hud-value" id="angleText">0°</div>
+            </div>
+        </div>
+
+        <div class="zone-center">
+            
+            <div class="dashboard-screen" id="dashboardScreen">
+                <div class="screen-idle" id="screenIdle">
+                    <div class="digital-speed" id="digitalSpeed">0</div>
+                    <div class="speed-unit">KM/H</div>
+                </div>
+                <div class="radar-view" id="radarView">
+                    <div class="car-silhouette"></div>
+                    <div class="radar-waves">
+                        <div class="wave w1"></div>
+                        <div class="wave w2"></div>
+                        <div class="wave w3"></div>
+                    </div>
+                    <div class="warning-text">OBSTACLE DETECTED</div>
+                </div>
+            </div>
+
+            <div class="control-deck">
+                <button class="btn" id="btnHeadLight" onclick="toggleFunc('HEADLIGHT')">
+                    <img src="assets/light.png" class="icon-img" alt="Head">
+                </button>
+                <button class="btn" id="btnTailLight" onclick="toggleFunc('TAILLIGHT')">
+                    <img src="assets/light.png" class="icon-img" alt="Tail">
+                </button>
+                <button class="btn" id="btnHorn">
+                    <img src="assets/horn.png" class="icon-img" alt="Horn">
+                </button>
+                <button class="btn" id="btnCruise" onclick="toggleCruise()">
+                    <span style="font-weight:bold; font-size: 1.5vmin; color:#666">CRUISE</span>
+                </button>
+            </div>
+
+            <button class="btn btn-brake" id="btnBrake">STOP</button>
+        </div>
+
+        <div class="zone-right">
+            <div class="drive-column">
+                <button class="btn btn-gear" id="btnRev" onclick="toggleFunc('REV')">
+                    <img src="assets/gear.png" class="icon-img" alt="Rev">
+                </button>
+
+                <div class="throttle-wrapper">
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="0" class="vertical-slider" id="throttleSlider">
+                        <div class="slider-groove"></div>
+                        <div class="slider-indicator" id="sliderThumb">
+                            <div class="indicator-light"></div>
+                        </div>
+                    </div>
+                    <div class="hud-value" id="speedText">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="rotate-warning">
+        <img src="assets/rotate.png" class="icon-xl" alt="Rotate">
+        <div>XOAY NGANG MÀN HÌNH</div>
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>
